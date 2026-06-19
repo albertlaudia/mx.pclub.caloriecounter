@@ -162,6 +162,11 @@ Return this exact JSON shape:
 class FoodNutritionDB {
   FoodNutritionDB._();
 
+  /// Public accessor for search — exposes all entries as (name, _Nutrition).
+  /// Read-only: don't mutate from outside.
+  static List<MapEntry<String, _Nutrition>> get allEntries =>
+      _data.entries.toList(growable: false);
+
   static const _data = <String, _Nutrition>{
     // Proteins
     'chicken breast': _Nutrition(165, 31, 0, 3.6, 'protein', '🍗'),
@@ -314,10 +319,41 @@ class FoodNutritionDB {
     // Generic fallback — assume moderate
     return const _Nutrition(150, 5, 20, 5, 'other', '🍽️');
   }
+
+  /// Public API — returns a public NutritionInfo DTO.
+  static NutritionInfo getNutrition(String name) {
+    final n = lookup(name);
+    return NutritionInfo(
+      calPer100g: n.calPer100g,
+      protein: n.protein,
+      carbs: n.carbs,
+      fat: n.fat,
+      category: n.category,
+      emoji: n.emoji,
+    );
+  }
 }
 
 class _Nutrition {
   const _Nutrition(this.calPer100g, this.protein, this.carbs, this.fat, this.category, this.emoji);
+  final double calPer100g;
+  final double protein;
+  final double carbs;
+  final double fat;
+  final String category;
+  final String emoji;
+}
+
+/// Public DTO for cross-module consumption (search repo, settings, etc.).
+class NutritionInfo {
+  const NutritionInfo({
+    required this.calPer100g,
+    required this.protein,
+    required this.carbs,
+    required this.fat,
+    required this.category,
+    required this.emoji,
+  });
   final double calPer100g;
   final double protein;
   final double carbs;

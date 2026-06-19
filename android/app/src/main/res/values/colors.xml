@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand colors — mirror lib/core/theme/app_colors.dart -->
+    <color name="brand">#FF6B35</color>
+    <color name="brand_dark">#E85A2C</color>
+    <color name="brand_soft">#FFF1EB</color>
+    <color name="background">#FAFAFA</color>
+    <color name="text_primary">#1A1A1A</color>
+</resources>

@@ -1,0 +1,14 @@
+# Auto-generated. Don't edit. Copy to local.properties before building.
+#
+# The Flutter SDK path varies per machine — Flutter writes this when you
+# run `flutter pub get`. To create this file manually:
+#
+# 1. Run `flutter doctor -v` to find your Flutter SDK path
+# 2. Set sdk.dir to your Android SDK (usually ~/Library/Android/sdk on macOS,
+#    ~/Android/Sdk on Linux)
+# 3. flutter.versionCode and flutter.versionName are auto-set by `flutter build`
+
+sdk.dir=/path/to/your/Android/Sdk
+flutter.sdk=/path/to/your/flutter
+flutter.versionCode=1
+flutter.versionName=0.1.0

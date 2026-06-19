@@ -7,6 +7,7 @@ import '../../shared/providers/providers.dart';
 import '../../shared/widgets/calorie_ring.dart';
 import '../../shared/widgets/macro_bar.dart';
 import '../../shared/widgets/meal_card.dart';
+import 'snap_menu.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -93,7 +94,7 @@ class HomeScreen extends ConsumerWidget {
           ],
         ),
       ),
-      floatingActionButton: _SnapButton(),
+      floatingActionButton: const SnapMenu(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
@@ -185,92 +186,11 @@ class _EmptyState extends StatelessWidget {
         ),
         const SizedBox(height: 4),
         Text(
-          'Tap the camera to log your first meal',
+          'Tap + to log your first meal',
           style: Theme.of(context).textTheme.bodyMedium,
           textAlign: TextAlign.center,
         ),
       ],
-    );
-  }
-}
-
-class _SnapButton extends StatefulWidget {
-  @override
-  State<_SnapButton> createState() => _SnapButtonState();
-}
-
-class _SnapButtonState extends State<_SnapButton>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _controller;
-  late final Animation<double> _scaleAnim;
-  late final Animation<double> _glowAnim;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 1800),
-    )..repeat(reverse: true);
-    _scaleAnim = Tween<double>(begin: 1.0, end: 1.08).animate(
-      CurvedAnimation(parent: _controller, curve: AppMotion.standard),
-    );
-    _glowAnim = Tween<double>(begin: 0.4, end: 0.8).animate(
-      CurvedAnimation(parent: _controller, curve: AppMotion.standard),
-    );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (context, _) {
-        return GestureDetector(
-          onTap: () => context.push('/camera'),
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              // Glow
-              Container(
-                width: 96,
-                height: 96,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.brand.withOpacity(_glowAnim.value),
-                      blurRadius: 32,
-                      spreadRadius: 4,
-                    ),
-                  ],
-                ),
-              ),
-              Transform.scale(
-                scale: _scaleAnim.value,
-                child: Container(
-                  width: 72,
-                  height: 72,
-                  decoration: const BoxDecoration(
-                    gradient: AppColors.brandGradient,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.camera_alt_rounded,
-                    color: Colors.white,
-                    size: 32,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
     );
   }
 }

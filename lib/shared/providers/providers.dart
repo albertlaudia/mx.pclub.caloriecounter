@@ -1,10 +1,16 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../data/repositories/food_search_repository.dart';
 import '../data/repositories/meal_repository.dart';
 import '../data/sources/local_meal_cache.dart';
 
 /// Meal repository singleton
 final mealRepositoryProvider = Provider<MealRepository>((ref) {
   return MealRepository();
+});
+
+/// Food search repository singleton
+final foodSearchRepositoryProvider = Provider<FoodSearchRepository>((ref) {
+  return FoodSearchRepository();
 });
 
 /// Selected date (defaults to today)
