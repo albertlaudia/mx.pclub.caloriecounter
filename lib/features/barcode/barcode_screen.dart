@@ -4,9 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import '../../core/animation/app_motion.dart';
 import '../../core/theme/app_colors.dart';
-import '../../data/models/food_item.dart';
 import '../../shared/providers/providers.dart';
 
 /// Barcode scanner — uses mobile_scanner + Open Food Facts lookup.

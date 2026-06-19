@@ -6,7 +6,6 @@ import '../../core/animation/app_motion.dart';
 import '../../core/theme/app_colors.dart';
 import '../../data/models/food_item.dart';
 import '../../data/models/meal.dart';
-import '../../data/repositories/meal_repository.dart';
 import '../../shared/providers/providers.dart';
 
 /// Portion editor — set grams, choose meal type, save.

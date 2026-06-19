@@ -1,6 +1,5 @@
 import 'dart:io';
 import '../../core/network/openrouter_service.dart';
-import '../models/food_item.dart';
 import '../models/meal.dart';
 import '../sources/local_meal_cache.dart';
 
