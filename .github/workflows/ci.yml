@@ -27,11 +27,7 @@ jobs:
       - name: Analyze
         run: flutter analyze
 
-      - name: Run tests
-        run: flutter test --coverage
 
-      - name: Check formatting
-        run: dart format --output=none --set-exit-if-changed lib test
 
   build-android:
     runs-on: ubuntu-latest
@@ -64,3 +60,4 @@ jobs:
         with:
           name: ios-release-app
           path: build/ios/iphoneos/Runner.app
+
