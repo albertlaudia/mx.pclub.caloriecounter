@@ -36,6 +36,8 @@ extension MealTypeX on MealType {
 
 @freezed
 class Meal with _$Meal {
+  const Meal._(); // enable computed getters
+
   const factory Meal({
     required String id,
     required DateTime loggedAt,
@@ -47,9 +49,8 @@ class Meal with _$Meal {
   }) = _Meal;
 
   factory Meal.fromJson(Map<String, dynamic> json) => _$MealFromJson(json);
-}
 
-extension MealX on Meal {
+  // Computed getters — defined directly on the union class so they're always visible
   double get totalCalories =>
       items.fold(0.0, (sum, item) => sum + item.calories);
 
