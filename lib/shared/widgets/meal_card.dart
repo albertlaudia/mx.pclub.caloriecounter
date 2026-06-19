@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import '../../core/animation/app_motion.dart';
 import '../../core/theme/app_colors.dart';
 import '../../data/models/meal.dart';

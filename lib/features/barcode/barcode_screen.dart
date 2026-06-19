@@ -107,7 +107,7 @@ class _BarcodeScannerScreenState extends ConsumerState<BarcodeScannerScreen> {
           MobileScanner(
             controller: _controller,
             onDetect: _onDetect,
-            errorBuilder: (context, error) => _ScannerError(error: error),
+            errorBuilder: (context, error, child) => _ScannerError(error: error),
           ),
 
           // Viewfinder overlay
