@@ -20,3 +20,7 @@
 # Hive
 -keep class * extends androidx.room.RoomDatabase
 -keep class * implements io.flutter.embedding.engine.plugins.FlutterPlugin
+
+# Google Play Core — fix R8 missing classes
+-dontwarn com.google.android.play.core.**
+-keep class com.google.android.play.core.** { *; }
