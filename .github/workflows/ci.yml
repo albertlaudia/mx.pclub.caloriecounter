@@ -68,8 +68,10 @@ jobs:
           from googleapiclient.http import MediaFileUpload
 
           SCOPES = ['https://www.googleapis.com/auth/androidpublisher']
-          creds_dict = os.environ.get('GCLOUD_SERVICE_ACCOUNT_CREDENTIALS', '')
           import json
+          creds_dict = os.environ.get('GCLOUD_SERVICE_ACCOUNT_CREDENTIALS', '')
+          if not creds_dict:
+              raise RuntimeError('GCLOUD_SERVICE_ACCOUNT_CREDENTIALS secret is empty or not set!')
           creds = service_account.Credentials.from_service_account_info(
               json.loads(creds_dict), scopes=SCOPES)
           auth_req = Request()
