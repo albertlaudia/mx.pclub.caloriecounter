@@ -15,7 +15,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.0'
+          flutter-version: '3.27.1'
           channel: stable
 
       - name: Install dependencies
@@ -36,14 +36,76 @@ jobs:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.0'
+          flutter-version: '3.27.1'
+
+      - name: Install Python + googleapiclient
+        run: |
+          pip install google-auth google-auth-oauthlib google-api-python-client
 
       - run: flutter pub get
       - run: dart run build_runner build --delete-conflicting-outputs
-      - run: flutter build apk --release
+      - run: flutter build appbundle --release
+
+      - name: Extract version
+        id: version
+        run: |
+          VERSION=$(grep "version:" pubspec.yaml | head -1 | sed 's/version: //' | tr -d ' ')
+          VERSION_CODE=$(echo $VERSION | cut -d'+' -f2)
+          echo "version_code=$VERSION_CODE" >> $GITHUB_OUTPUT
+          echo "version_name=$(echo $VERSION | cut -d'+' -f1)" >> $GITHUB_OUTPUT
+          echo "Package version: $VERSION"
+
+      - name: Upload to Play Store (Internal Track)
+        env:
+          VERSION_CODE: ${{ steps.version.outputs.version_code }}
+        run: |
+          python3 << 'PYEOF'
+          import os, subprocess
+          from google.oauth2 import service_account
+          from google.auth.transport.requests import Request
+          from googleapiclient.discovery import build
+          from googleapiclient.http import MediaFileUpload
+
+          SCOPES = ['https://www.googleapis.com/auth/androidpublisher']
+          creds_dict = os.environ.get('GCLOUD_SERVICE_ACCOUNT_CREDENTIALS', '')
+          import json
+          creds = service_account.Credentials.from_service_account_info(
+              json.loads(creds_dict), scopes=SCOPES)
+          auth_req = Request()
+          creds.refresh(auth_req)
+          service = build('androidpublisher', 'v3', credentials=creds)
+
+          package_name = 'com.pclub.calorietracker'
+          version_code = int(os.environ.get('VERSION_CODE', '1'))
+          aab_path = 'build/app/outputs/bundle/release/app-release.aab'
+
+          print(f"Uploading v{version_code} to Play Store...")
+
+          edit = service.edits().insert(body={}, packageName=package_name).execute()
+          edit_id = edit['id']
+
+          media = MediaFileUpload(aab_path, mimetype='application/octet-stream')
+          bundle = service.edits().bundles().upload(
+              editId=edit_id, packageName=package_name, media_body=media
+          ).execute()
+
+          service.edits().tracks().update(
+              editId=edit_id, packageName=package_name, track='internal',
+              body={'releases': [{'versionCodes': [str(version_code)], 'status': 'draft'}]}
+          ).execute()
+
+          service.edits().commit(editId=edit_id, packageName=package_name).execute()
+
+          print(f"✅ Bundle v{bundle['versionCode']} uploaded to internal track!")
+          print(f"📦 https://play.google.com/console → {package_name} → Internal Testing")
+          PYEOF
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android-release-aab
+          path: build/app/outputs/bundle/release/app-release.aab
+
       - uses: actions/upload-artifact@v4
         with:
           name: android-release-apk
           path: build/app/outputs/flutter-apk/app-release.apk
-
-
