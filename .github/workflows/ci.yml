@@ -9,7 +9,7 @@ on:
 
 jobs:
   analyze-and-test:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted,android]
     steps:
       - uses: actions/checkout@v4
 
@@ -31,7 +31,7 @@ jobs:
 
 
   build-android:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted,android]
     needs: analyze-and-test
     steps:
       - uses: actions/checkout@v4
@@ -113,6 +113,7 @@ jobs:
         with:
           name: android-release-apk
           path: build/app/outputs/flutter-apk/app-release.apk
+
 
 
 
