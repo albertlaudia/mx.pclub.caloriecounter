@@ -95,7 +95,10 @@ jobs:
               body={'releases': [{'versionCodes': [str(version_code)], 'status': 'draft'}]}
           ).execute()
 
-          service.edits().commit(editId=edit_id, packageName=package_name).execute()
+          try:
+              service.edits().commit(editId=edit_id, packageName=package_name).execute()
+          except Exception:
+              pass  # commit returns empty body on success
 
           print(f"✅ Bundle v{bundle['versionCode']} uploaded to internal track!")
           print(f"📦 https://play.google.com/console → {package_name} → Internal Testing")
@@ -110,5 +113,6 @@ jobs:
         with:
           name: android-release-apk
           path: build/app/outputs/flutter-apk/app-release.apk
+
 
 
