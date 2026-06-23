@@ -59,21 +59,19 @@ jobs:
       - name: Upload to Play Store (Internal Track)
         env:
           VERSION_CODE: ${{ steps.version.outputs.version_code }}
+          GCLOUD_SERVICE_ACCOUNT_CREDENTIALS: ${{ secrets.GCLOUD_SERVICE_ACCOUNT_CREDENTIALS }}
         run: |
+          echo "$GCLOUD_SERVICE_ACCOUNT_CREDENTIALS" > /tmp/sa-key.json
           python3 << 'PYEOF'
-          import os, subprocess
+          import os
           from google.oauth2 import service_account
           from google.auth.transport.requests import Request
           from googleapiclient.discovery import build
           from googleapiclient.http import MediaFileUpload
 
           SCOPES = ['https://www.googleapis.com/auth/androidpublisher']
-          import json
-          creds_dict = os.environ.get('GCLOUD_SERVICE_ACCOUNT_CREDENTIALS', '')
-          if not creds_dict:
-              raise RuntimeError('GCLOUD_SERVICE_ACCOUNT_CREDENTIALS secret is empty or not set!')
-          creds = service_account.Credentials.from_service_account_info(
-              json.loads(creds_dict), scopes=SCOPES)
+          creds = service_account.Credentials.from_service_account_file(
+              '/tmp/sa-key.json', scopes=SCOPES)
           auth_req = Request()
           creds.refresh(auth_req)
           service = build('androidpublisher', 'v3', credentials=creds)
