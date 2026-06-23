@@ -24,7 +24,7 @@ if (flutterVersionName == null) {
 
 android {
     namespace = "com.calorieapp.app"
-    compileSdk = 34
+    compileSdk = 35
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -44,7 +44,7 @@ android {
         applicationId = "com.calorieapp.app"
         // Min SDK 21 (Android 5.0) — required by mobile_scanner
         minSdk = 21
-        targetSdk = 34
+        targetSdk = 35
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
 
@@ -89,3 +89,4 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.22"
     implementation "androidx.multidex:multidex:2.0.1"
 }
+
