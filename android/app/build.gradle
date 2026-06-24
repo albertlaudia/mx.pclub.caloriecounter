@@ -23,7 +23,7 @@ if (flutterVersionName == null) {
 }
 
 android {
-    namespace = "com.calorieapp.app"
+    namespace = "com.pclub.calorietracker"
     buildToolsVersion = "35.0.0"
     compileSdk = 35
     ndkVersion = flutter.ndkVersion
@@ -42,7 +42,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.calorieapp.app"
+        applicationId = "com.pclub.calorietracker"
         // Min SDK 21 (Android 5.0) — required by mobile_scanner
         minSdk = 21
         targetSdk = 35
