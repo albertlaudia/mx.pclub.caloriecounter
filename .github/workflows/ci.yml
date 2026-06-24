@@ -58,7 +58,23 @@ jobs:
         env:
           FLUTTER_ROOT: ${{ steps.flutter.outputs.FLUTTER_ROOT }}
 
-      - run: flutter build appbundle --release
+      - name: Flutter precache
+        run: flutter precache --no-android || true
+
+      - name: Debug flutter env
+        run: |
+          echo "FLUTTER_ROOT=$FLUTTER_ROOT"
+          echo "PATH first 5 entries:"
+          echo "$PATH" | tr ':' '\n' | head -5
+          flutter --version || echo "Flutter version failed"
+
+      - run: flutter build appbundle --release --verbose 2>&1 | tee flutter_build.log
+        env:
+          FLUTTER_ROOT: ${{ steps.flutter.outputs.FLUTTER_ROOT }}
+
+      - name: Show build log tail on failure
+        if: failure()
+        run: tail -30 flutter_build.log || true
 
       - name: Extract version
         id: version
