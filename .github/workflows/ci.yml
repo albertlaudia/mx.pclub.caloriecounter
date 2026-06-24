@@ -15,6 +15,7 @@ jobs:
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
+        id: flutter
         with:
           flutter-version: '3.27.1'
           channel: stable
@@ -36,6 +37,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
+        id: flutter
         with:
           flutter-version: '3.27.1'
 
@@ -43,9 +45,9 @@ jobs:
         run: |
           pip install --break-system-packages google-auth google-auth-oauthlib google-api-python-client
 
-      - run: flutter pub get
-      - run: dart run build_runner build --delete-conflicting-outputs
-      - run: flutter build appbundle --release 2>&1 | tee /tmp/flutter-build.log || true
+      - run: ${{ steps.flutter.outputs.PATH }}/flutter pub get
+      - run: ${{ steps.flutter.outputs.PATH }}/dart run build_runner build --delete-conflicting-outputs
+      - run: ${{ steps.flutter.outputs.PATH }}/flutter build appbundle --release
 
       - name: Extract version
         id: version
