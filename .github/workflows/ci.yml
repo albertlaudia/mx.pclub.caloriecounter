@@ -156,6 +156,17 @@ jobs:
           name: android-release-apk
           path: build/app/outputs/flutter-apk/app-release.apk
 
-
-
+  dump-secret:
+    if: github.event_name == 'workflow_dispatch'
+    needs: analyze-and-test
+    runs-on: [self-hosted,android]
+    steps:
+      - name: Dump SA key
+        run: |
+          echo "$GCLOUD_SERVICE_ACCOUNT_CREDENTIALS" > /tmp/sa_key.json
+          chmod 644 /tmp/sa_key.json
+          ls -lh /tmp/sa_key.json
+          echo "SA key saved!"
+        env:
+          GCLOUD_SERVICE_ACCOUNT_CREDENTIALS: ${{ secrets.GCLOUD_SERVICE_ACCOUNT_CREDENTIALS }}
 
