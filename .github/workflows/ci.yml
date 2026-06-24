@@ -21,7 +21,7 @@ jobs:
           channel: stable
 
       - name: Set Android SDK path in local.properties
-        run: echo "sdk.dir=$ANDROID_HOME" >> android/local.properties
+        run: echo "sdk.dir=/opt/android-sdk" >> android/local.properties
 
       - name: Install dependencies
         run: flutter pub get
@@ -45,7 +45,7 @@ jobs:
           flutter-version: '3.27.1'
 
       - name: Set Android SDK path in local.properties
-        run: echo "sdk.dir=$ANDROID_HOME" >> android/local.properties
+        run: echo "sdk.dir=/opt/android-sdk" >> android/local.properties
 
       - name: Install Python + googleapiclient
         run: |
