@@ -39,6 +39,9 @@ jobs:
     needs: analyze-and-test
     steps:
       - uses: actions/checkout@v4
+      - name: Cleanup flutter lockfile
+        run: rm -f $FLUTTER_ROOT/bin/cache/lockfile
+
       - uses: subosito/flutter-action@v2
         id: flutter
         with:
