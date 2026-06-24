@@ -24,6 +24,7 @@ if (flutterVersionName == null) {
 
 android {
     namespace = "com.calorieapp.app"
+    buildToolsVersion = "35.0.0"
     compileSdk = 35
     ndkVersion = flutter.ndkVersion
 
