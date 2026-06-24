@@ -44,9 +44,6 @@ jobs:
         with:
           flutter-version: '3.27.1'
 
-      - name: Cleanup flutter lockfile
-        run: rm -f $FLUTTER_ROOT/bin/cache/lockfile
-
       - name: Set Android SDK path in local.properties
         run: echo "sdk.dir=/opt/android-sdk" >> android/local.properties
 
@@ -56,6 +53,11 @@ jobs:
 
       - run: flutter pub get
       - run: dart run build_runner build --delete-conflicting-outputs
+      - name: Cleanup flutter lockfile before build
+        run: |
+          FLUTTER_ROOT="${{ github.workspace }}/../_tool/flutter/stable-3.27.1-x64/flutter"
+          rm -f "$FLUTTER_ROOT/bin/cache/lockfile" 2>/dev/null || true
+
       - run: flutter build appbundle --release
 
       - name: Extract version
