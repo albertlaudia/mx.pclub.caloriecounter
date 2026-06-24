@@ -55,14 +55,15 @@ jobs:
       - run: dart run build_runner build --delete-conflicting-outputs
       - name: Set up release signing
         run: |
-          echo "$RELEASE_KEYSTORE_BASE64" | base64 -d > android/app/release-keystore.jks
-          cat > android/key.properties << EOF
+          echo "$RELEASE_KEYSTORE_BASE64" | base64 -d > app/release-keystore.jks
+          cat > key.properties << EOF
           storeFile=app/release-keystore.jks
           storePassword=$RELEASE_KEYSTORE_PASSWORD
           keyPassword=$RELEASE_KEYSTORE_PASSWORD
           keyAlias=$RELEASE_KEYSTORE_ALIAS
           EOF
           echo "Release signing configured"
+        working-directory: android
 
       - name: Cleanup flutter lockfile before build
         run: rm -f "$FLUTTER_ROOT/bin/cache/lockfile" 2>/dev/null || true
