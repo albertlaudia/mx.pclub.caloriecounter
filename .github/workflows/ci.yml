@@ -41,7 +41,7 @@ jobs:
 
       - name: Install Python + googleapiclient
         run: |
-          pip install google-auth google-auth-oauthlib google-api-python-client
+          pip install --break-system-packages google-auth google-auth-oauthlib google-api-python-client
 
       - run: flutter pub get
       - run: dart run build_runner build --delete-conflicting-outputs
