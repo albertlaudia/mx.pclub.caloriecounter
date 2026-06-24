@@ -73,6 +73,13 @@ jobs:
           echo "version_name=$(echo $VERSION | cut -d'+' -f1)" >> $GITHUB_OUTPUT
           echo "Package version: $VERSION"
 
+      - name: Upload AAB as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-release-aab-v${{ steps.version.outputs.version_code }}
+          path: build/app/outputs/bundle/release/app-release.aab
+          retention-days: 30
+
       - name: Upload to Play Store (Internal Track)
         env:
           VERSION_CODE: ${{ steps.version.outputs.version_code }}
