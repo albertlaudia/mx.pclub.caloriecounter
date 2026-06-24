@@ -54,9 +54,9 @@ jobs:
       - run: flutter pub get
       - run: dart run build_runner build --delete-conflicting-outputs
       - name: Cleanup flutter lockfile before build
-        run: |
-          FLUTTER_ROOT="${{ github.workspace }}/../_tool/flutter/stable-3.27.1-x64/flutter"
-          rm -f "$FLUTTER_ROOT/bin/cache/lockfile" 2>/dev/null || true
+        run: rm -f "$FLUTTER_ROOT/bin/cache/lockfile" 2>/dev/null || true
+        env:
+          FLUTTER_ROOT: ${{ steps.flutter.outputs.FLUTTER_ROOT }}
 
       - run: flutter build appbundle --release
 
