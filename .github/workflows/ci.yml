@@ -55,7 +55,7 @@ jobs:
       - run: dart run build_runner build --delete-conflicting-outputs
       - name: Set up release signing
         run: |
-          echo "$RELEASE_KEYSTORE_BASE64" | base64 -d > app/release-keystore.jks
+          echo "$RELEASE_KEYSTORE_BASE64" | base64 -d > release-keystore.jks
           cat > key.properties << EOF
           storeFile=release-keystore.jks
           storePassword=$RELEASE_KEYSTORE_PASSWORD
@@ -63,7 +63,7 @@ jobs:
           keyAlias=$RELEASE_KEYSTORE_ALIAS
           EOF
           echo "Release signing configured"
-          ls -lh app/release-keystore.jks && echo "KEYSTORE OK" || echo "KEYSTORE MISSING/EMPTY"
+          ls -lh release-keystore.jks && echo "KEYSTORE OK" || echo "KEYSTORE MISSING/EMPTY"
           cat key.properties
         working-directory: android
         env:
