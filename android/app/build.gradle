@@ -51,7 +51,7 @@ android {
     defaultConfig {
         applicationId = "com.pclub.calorietracker"
         // Min SDK 21 (Android 5.0) — required by mobile_scanner
-        minSdk = 21
+        minSdkVersion = flutter.minSdkVersion
         targetSdk = 35
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
